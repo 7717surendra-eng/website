@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Multi Bouncing Balls</title>
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background: #ffffff;
+    }
+
+    .ball {
+      position: absolute;
+      border-radius: 50%;
+      opacity: 0.9;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const numBalls = 1; // kitni balls chahiye
+    const balls = [];
+    const colors = [
+      "#ff4757", "#1e90ff", "#2ed573", "#ffa502", "#ff6b81",
+      "#5352ed", "#70a1ff", "#7bed9f", "#ff7f50", "#3742fa",
+      "#a55eea", "#ff9ff3", "#feca57", "#1dd1a1", "#ee5253"
+    ];
+
+    // create balls
+    for (let i = 0; i < numBalls; i++) {
+      let ball = document.createElement("div");
+      ball.classList.add("ball");
+      ball.style.background = colors[i % colors.length];
+      ball.style.width = ball.style.height = `${Math.random() * 40 + 20}px`;
+      ball.style.left = `${Math.random() * window.innerWidth}px`;
+      ball.style.top = `${Math.random() * window.innerHeight}px`;
+
+      // random movement data
+      ball.dx = (Math.random() - 0.5) * 6; // x speed
+      ball.dy = (Math.random() - 0.5) * 6; // y speed
+
+      document.body.append(ball);
+      balls.push(ball);
+    }
+
+    function animate() {
+      balls.forEach((ball) => {
+        let x = parseFloat(ball.style.left);
+        let y = parseFloat(ball.style.top);
+        const size = parseFloat(ball.style.width);
+
+        // move
+        x += ball.dx;
+        y += ball.dy;
+
+        // bounce from walls
+        if (x <= 0 || x + size >= window.innerWidth) ball.dx *= -1;
+        if (y <= 0 || y + size >= window.innerHeight) ball.dy *= -1;
+
+        ball.style.left = `${x}px`;
+        ball.style.top = `${y}px`;
+      });
+
+      requestAnimationFrame(animate);
+    }
+
+    animate();
+
+    // update if screen resizes
+    window.addEventListener("resize", () => {
+      balls.forEach(ball => {
+        let x = parseFloat(ball.style.left);
+        let y = parseFloat(ball.style.top);
+        if (x + parseFloat(ball.style.width) > window.innerWidth) {
+          ball.style.left = `${window.innerWidth - parseFloat(ball.style.width)}px`;
+        }
+        if (y + parseFloat(ball.style.height) > window.innerHeight) {
+          ball.style.top = `${window.innerHeight - parseFloat(ball.style.height)}px`;
+        }
+      });
+    });
+  </script>
+  <frameset rows="33%,33%,33%">  </frameset>
+  <frameset Rows="30%">hii </frameset>
+</body>
+</html>
